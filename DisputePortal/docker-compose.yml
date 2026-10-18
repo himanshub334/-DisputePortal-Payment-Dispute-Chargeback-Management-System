@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: disputes
+      POSTGRES_USER: disputes
+      POSTGRES_PASSWORD: disputes
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U disputes -d disputes"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+  api:
+    build: ./backend
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/disputes
+      DB_USERNAME: disputes
+      DB_PASSWORD: disputes
+      UPLOAD_DIR: /app/uploads
+      MAX_UPLOAD_BYTES: 10485760
+    ports: ["8080:8080"]
+    volumes: ["dispute_uploads:/app/uploads"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+  frontend:
+    build: ./frontend
+    ports: ["4200:80"]
+    depends_on: [api]
+volumes:
+  dispute_uploads:
