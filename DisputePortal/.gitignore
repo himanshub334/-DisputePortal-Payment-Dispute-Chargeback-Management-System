@@ -1,9 +1,0 @@
-target/
-node_modules/
-dist/
-.angular/
-uploads/
-.env
-*.log
-.idea/
-.vscode/
