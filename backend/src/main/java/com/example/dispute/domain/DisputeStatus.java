@@ -1,0 +1,4 @@
+package com.example.dispute.domain;
+public enum DisputeStatus {
+  FILED, EVIDENCE_REQUESTED, UNDER_REVIEW, RESOLVED_FAVOUR_CARDHOLDER, RESOLVED_FAVOUR_MERCHANT, ESCALATED
+}
